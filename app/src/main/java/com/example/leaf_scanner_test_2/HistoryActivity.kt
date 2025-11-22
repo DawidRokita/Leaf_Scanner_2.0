@@ -49,12 +49,12 @@ class HistoryActivity : AppCompatActivity() {
 
     private fun showDeleteDialog(item: ScanResult) {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Usuń zapis?")
-            .setMessage("Czy na pewno chcesz usunąć ten wynik?")
-            .setPositiveButton("Usuń") { _: DialogInterface, _: Int ->
+            .setTitle("Delete?")
+            .setMessage("Are you sure you want to delete?")
+            .setPositiveButton("Delete") { _: DialogInterface, _: Int ->
                 deleteItem(item)
             }
-            .setNegativeButton("Anuluj", null)
+            .setNegativeButton("Cancel", null)
             .show()
     }
 
