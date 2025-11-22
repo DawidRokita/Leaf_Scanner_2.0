@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- LIGHT THEME -->
+    <style name="Base.Theme.Leaf_scanner_test_2" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="materialButtonStyle">@style/MyPlainButton</item>
+    </style>
+    <style name="Theme.App" parent="Theme.Material3.DayNight.NoActionBar" />
+
+
+    <style name="Theme.Leaf_scanner_test_2" parent="Base.Theme.Leaf_scanner_test_2" />
+
+    <!-- Custom non-Material button -->
+    <style name="MyPlainButton" parent="">
+        <item name="android:background">@null</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+
+</resources>
