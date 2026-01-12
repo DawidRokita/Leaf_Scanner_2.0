@@ -4,6 +4,9 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,16 +47,13 @@ class ScanResultAdapter(
         val item = getItem(position)
 
         holder.title.text = item.leafName
-        holder.subtitle.text = "${item.prediction} • ${formatDate(item.timestamp)}"
+        holder.subtitle.text = buildStyledSubtitle(item.prediction, item.timestamp)
 
-        // placeholder
         holder.avatar.setImageResource(R.drawable.avatar_mask)
 
-        // cancel previous thumbnail job
         holder.loadJob?.cancel()
         holder.loadJob = CoroutineScope(Dispatchers.IO).launch {
             val bmp = decodeThumbnail(item.imageUri, 150)
-
             withContext(Dispatchers.Main) {
                 if (holder.adapterPosition != RecyclerView.NO_POSITION) {
                     bmp?.let { holder.avatar.setImageBitmap(it) }
@@ -61,25 +61,48 @@ class ScanResultAdapter(
             }
         }
 
-        // open detail
         holder.itemView.setOnClickListener { onClick(item) }
 
-        // delete button
         holder.btnDelete.setOnClickListener {
             val index = holder.adapterPosition
-            if (index != RecyclerView.NO_POSITION) {
-                onDeleteRequest(item, index)
-            }
+            if (index != RecyclerView.NO_POSITION) onDeleteRequest(item, index)
         }
     }
 
-    // THUMBNAIL DECODER — lightweight
+    private fun buildStyledSubtitle(predictionText: String, timestamp: Long): CharSequence {
+        val statusPl = extractLineValue(predictionText, "Status") ?: "-"
+        val confidence = extractLineValue(predictionText, "Confidence") ?: "—"
+        val date = formatDate(timestamp)
+
+        val isHealthy = statusPl.equals("Healthy", true)
+        val statusEn = if (isHealthy) "Healthy" else "Diseased"
+
+        val full = "$statusEn ($confidence) • $date"
+        val spannable = SpannableString(full)
+
+        val color = if (isHealthy) 0xFF2E7D32.toInt() else 0xFFC62828.toInt()
+        spannable.setSpan(
+            ForegroundColorSpan(color),
+            0,
+            statusEn.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        return spannable
+    }
+
+    private fun extractLineValue(predictionText: String, key: String): String? {
+        val line = predictionText.lines()
+            .firstOrNull { it.trim().startsWith("$key:", ignoreCase = true) }
+            ?: return null
+        return line.substringAfter(":", "").trim().ifEmpty { null }
+    }
+
     private fun decodeThumbnail(path: String, reqSize: Int): Bitmap? {
         return try {
             val file = File(path)
             if (!file.exists()) return null
 
-            // --- 1. Odczyt EXIF ---
             val exif = ExifInterface(path)
             val orientation = exif.getAttributeInt(
                 ExifInterface.TAG_ORIENTATION,
@@ -93,10 +116,7 @@ class ScanResultAdapter(
                 else -> 0f
             }
 
-            // --- 2. Dekodowanie miniatury ---
-            val options = BitmapFactory.Options().apply {
-                inJustDecodeBounds = true
-            }
+            val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
             BitmapFactory.decodeFile(path, options)
 
             var scale = 1
@@ -104,19 +124,11 @@ class ScanResultAdapter(
                 scale *= 2
             }
 
-            val finalOptions = BitmapFactory.Options().apply {
-                inSampleSize = scale
-            }
-
+            val finalOptions = BitmapFactory.Options().apply { inSampleSize = scale }
             val bitmap = BitmapFactory.decodeFile(path, finalOptions) ?: return null
 
-            // --- 3. Obrót miniatury ---
             if (rotation == 0f) return bitmap
-
-            val matrix = Matrix().apply {
-                postRotate(rotation)
-            }
-
+            val matrix = Matrix().apply { postRotate(rotation) }
             Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
 
         } catch (e: Exception) {
@@ -124,7 +136,6 @@ class ScanResultAdapter(
             null
         }
     }
-
 
     private fun formatDate(timestamp: Long): String {
         val sdf = java.text.SimpleDateFormat("dd-MM-yyyy HH:mm")

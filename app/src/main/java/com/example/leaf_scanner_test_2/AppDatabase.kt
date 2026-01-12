@@ -1,6 +1,5 @@
 package com.example.leaf_scanner_test_2
 
-// AppDatabase.kt
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room

@@ -53,7 +53,6 @@
         android:layout_above="@+id/tvPrediction"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="..."
         android:textColor="@color/green_text"
         android:textSize="24sp" />
 
@@ -76,7 +75,7 @@
         android:layout_marginBottom="48dp"
         android:gravity="center"
         android:text="..."
-        android:textColor="@color/green_text"
+        android:textColor="@color/white"
         android:textSize="16sp" />
 
 </RelativeLayout>

@@ -3,7 +3,6 @@ package com.example.leaf_scanner_test_2
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,7 +14,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 class DetailActivity : AppCompatActivity() {
 
@@ -28,7 +28,6 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
 
         val image = findViewById<ImageView>(R.id.imageLeaf)
-        val tvName = findViewById<TextView>(R.id.tvLeafName)
         val tvPrediction = findViewById<TextView>(R.id.tvPrediction)
         val tvDate = findViewById<TextView>(R.id.tvDate)
 
@@ -38,25 +37,32 @@ class DetailActivity : AppCompatActivity() {
             val dao = AppDatabase.get(this@DetailActivity).scanResultDao()
             val result = withContext(Dispatchers.IO) { dao.getById(id) } ?: return@launch
 
-            tvName.text = result.leafName
-            tvPrediction.text = "${result.prediction}"
+            tvPrediction.text = result.prediction
+
+            val status = extractStatus(result.prediction)
+            tvPrediction.setTextColor(
+                if (status.equals("Healthy", true)) 0xFF2E7D32.toInt() else 0xFFC62828.toInt()
+            )
 
             val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
-            tvDate.text = "${sdf.format(Date(result.timestamp))}"
+            tvDate.text = sdf.format(Date(result.timestamp))
 
             val bitmap = loadBitmapWithRotation(result.imageUri)
             image.setImageBitmap(bitmap)
         }
     }
 
+    private fun extractStatus(predictionText: String): String {
+        return predictionText.lines()
+            .firstOrNull { it.trim().startsWith("Status:", ignoreCase = true) }
+            ?.substringAfter(":", "")
+            ?.trim()
+            ?: "-"
+    }
 
-    // ============================
-    // POPRAWNE WCZYTYWANIE Z PLIKU
-    // ============================
     private fun loadBitmapWithRotation(path: String): Bitmap {
         val file = File(path)
 
-        // EXIF tylko z pliku!
         val exif = ExifInterface(file.absolutePath)
         val orientation = exif.getAttributeInt(
             ExifInterface.TAG_ORIENTATION,

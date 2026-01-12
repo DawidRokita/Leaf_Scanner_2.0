@@ -33,7 +33,6 @@ class HistoryActivity : AppCompatActivity() {
             onDeleteRequest = { item, _ ->
                 showDeleteDialog(item)
             }
-
         )
 
         val recycler = findViewById<RecyclerView>(R.id.recyclerHistory)
@@ -60,16 +59,12 @@ class HistoryActivity : AppCompatActivity() {
 
     private fun deleteItem(item: ScanResult) {
         lifecycleScope.launch(Dispatchers.IO) {
-
-            // 1) Usuń plik zdjęcia z pamięci
             try {
                 val file = File(item.imageUri)
                 if (file.exists()) file.delete()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
-            // 2) Usuń rekord z bazy
             dao.delete(item)
         }
     }
