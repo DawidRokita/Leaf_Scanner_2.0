@@ -65,7 +65,7 @@ The model performs multi-class classification of plant leaves to determine both 
 - Black Rot
 - Cedar Apple Rust
 - Healthy
-
+ 
 ### 🫐 Blueberry
 
 - Healthy
