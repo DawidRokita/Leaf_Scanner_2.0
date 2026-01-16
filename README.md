@@ -27,9 +27,9 @@ The entire inference process runs **offline on the device** using a PyTorch mode
 
 ## 🖼️ Screenshots
 
-| Home screen               | Image selection              | Scan result                 | History                      |
-| ------------------------- | ---------------------------- | --------------------------- | ---------------------------- |
-| ![](screenshots/home.jpg) | ![](screenshots/gallery.jpg) | ![](screenshots/result.jpg) | ![](screenshots/history.jpg) |
+| Home screen               | Image selection              | Scan result                 | History                      | Camera                      |
+| ------------------------- | ---------------------------- | --------------------------- | ---------------------------- | --------------------------- |
+| ![](screenshots/home.png) | ![](screenshots/gallery.png) | ![](screenshots/result.png) | ![](screenshots/history.png) | ![](screenshots/camera.png) |
 
 ---
 
