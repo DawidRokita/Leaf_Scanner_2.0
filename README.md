@@ -43,6 +43,7 @@ The entire inference process runs **offline on the device** using a PyTorch mode
     <td><img src="screenshots/camera.png" width="180"/></td>
   </tr>
 </table>
+
 ---
 
 ## 🧠 Machine Learning Model
