@@ -38,7 +38,7 @@ The entire inference process runs **offline on the device** using a PyTorch mode
   <tr>
     <td><img src="screenshots/home.png" width="180"/></td>
     <td><img src="screenshots/gallery.png" width="180"/></td>
-
+    <td><img src="screenshots/result.png" width="180"/></td>
     <td><img src="screenshots/history.png" width="180"/></td>
     <td><img src="screenshots/camera.png" width="180"/></td>
   </tr>
