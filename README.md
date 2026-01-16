@@ -27,9 +27,22 @@ The entire inference process runs **offline on the device** using a PyTorch mode
 
 ## 🖼️ Screenshots
 
-| Home screen               | Image selection              | Scan result                 | History                      | Camera                      |
-| ------------------------- | ---------------------------- | --------------------------- | ---------------------------- | --------------------------- |
-| ![](screenshots/home.png) | ![](screenshots/gallery.png) | ![](screenshots/result.png) | ![](screenshots/history.png) | ![](screenshots/camera.png) |
+<table>
+  <tr>
+    <th>Home</th>
+    <th>Gallery</th>
+    <th>Result</th>
+    <th>History</th>
+    <th>Camera</th>
+  </tr>
+  <tr>
+    <td><img src="screenshots/home.png" width="180"/></td>
+    <td><img src="screenshots/gallery.png" width="180"/></td>
+    <td><img src="screenshots/result.png" width="180"/></td>
+    <td><img src="screenshots/history.png" width="180"/></td>
+    <td><img src="screenshots/camera.png" width="180"/></td>
+  </tr>
+</table>
 
 ---
 
