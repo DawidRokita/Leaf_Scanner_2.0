@@ -1,6 +1,6 @@
-# 🌿 LeafScanner
+# 🌿 Leaf Scanner
 
-**LeafScanner** is an Android application that uses deep learning to detect plant leaf diseases.  
+**Leaf Scanner** is an Android application that uses machine learning to detect plant leaf diseases.  
 The app allows users to take a photo or select an image from the gallery and instantly receive information about:
 
 - plant species,
