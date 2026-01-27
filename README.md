@@ -155,7 +155,7 @@ The model performs multi-class classification of plant leaves to determine both 
 2. Open in **Android Studio**
 3. Place the model file in:
    ```
-   app/src/main/assets/model.ptl
+   app/src/main/assets/leaf_model_mobile_cpu.ptl
    ```
 4. Build and run on a physical Android device
 
